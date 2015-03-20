@@ -1,7 +1,10 @@
 package falling;
 
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -34,8 +37,16 @@ public class JFXApp extends javafx.application.Application {
         r2.setWidth(50);
 
         Button b = new Button("Hello");
-        b.setOnMouseClicked((evt) -> r2.setFill(Color.GREEN));
-        //b.setTranslateX(100);
+        b.setOnMouseClicked((event) -> {
+            new Thread(() -> {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    // do nothing
+                }
+                Platform.runLater(() -> r2.setFill(Color.GREEN));
+            }).start();
+        });
 
         HBox hbox = new HBox(circle, r1, r2, b);
 
@@ -50,6 +61,9 @@ public class JFXApp extends javafx.application.Application {
         Scene scene = new Scene(hbox);
 
         primaryStage.setScene(scene);
+
+        Sim sim = new Sim();
+        sim.start();
 
         primaryStage.show();
 
