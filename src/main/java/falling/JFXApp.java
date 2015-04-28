@@ -1,16 +1,23 @@
 package falling;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+
+import java.util.ArrayList;
 
 public class JFXApp extends javafx.application.Application {
 
@@ -55,7 +62,7 @@ public class JFXApp extends javafx.application.Application {
         background = new Rectangle();
         background.setWidth(simUiWidth);
         background.setHeight(simUiHeight);
-        background.setFill(Color.ALICEBLUE);
+        background.setFill(Color.BLUE);
 
         floor = new Rectangle();
         floor.setFill(Color.BROWN);
@@ -64,7 +71,7 @@ public class JFXApp extends javafx.application.Application {
         box1r.setFill(Color.ORANGE);
         box1r.setHeight(sim.boxSize * xConversion());
         box1r.setWidth(sim.boxSize * xConversion());
-        box1r.setTranslateX(- sim.boxSize / 2 * xConversion());
+        box1r.setTranslateX(-sim.boxSize / 2 * xConversion());
         box1r.setTranslateY(- sim.boxSize / 2 * xConversion());
         box1 = new Group(box1r);
 
@@ -72,7 +79,7 @@ public class JFXApp extends javafx.application.Application {
         box2r.setFill(Color.ORANGE);
         box2r.setHeight(sim.boxSize * xConversion());
         box2r.setWidth(sim.boxSize * xConversion());
-        box2r.setTranslateX(- sim.boxSize / 2 * xConversion());
+        box2r.setTranslateX(-sim.boxSize / 2 * xConversion());
         box2r.setTranslateY(- sim.boxSize / 2 * xConversion());
         box2 = new Group(box2r);
 
@@ -80,23 +87,71 @@ public class JFXApp extends javafx.application.Application {
         box3r.setFill(Color.ORANGE);
         box3r.setHeight(sim.boxSize * xConversion());
         box3r.setWidth(sim.boxSize * xConversion());
-        box3r.setTranslateX(- sim.boxSize / 2 * xConversion());
+        box3r.setTranslateX(-sim.boxSize / 2 * xConversion());
         box3r.setTranslateY(- sim.boxSize / 2 * xConversion());
         box3 = new Group(box3r);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         group = new Group(background, floor, box1, box2, box3, ballUi);
-        group.setTranslateY(100);
+
+        ScrollPane scrollPane = new ScrollPane(group);
+
 
         Button b = new Button("Fire!");
-        b.setTranslateY(simUiHeight);
         b.setOnMouseClicked((evt) -> sim.fire(10));
 
-        Group ui = new Group(group, b);
+        Button reset = new Button("Reset");
+        reset.setOnMouseClicked((evt) -> sim.reset());
 
-        Scene scene = new Scene(ui);
+        HBox hbox = new HBox(b, reset);
+
+        VBox vBox = new VBox(scrollPane, hbox);
+        vBox.setVgrow(scrollPane, Priority.ALWAYS);
+
+
+        ArrayList<String> al = new ArrayList<>();
+        for (int i = 0; i <= 1000000; i++) {
+            al.add(Integer.toString(i));
+        }
+
+        ObservableList<String> names = FXCollections.observableArrayList(al);
+
+        Scene scene = new Scene(vBox);
         primaryStage.setScene(scene);
         primaryStage.setHeight(800);
         primaryStage.setWidth(1000);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -105,7 +160,6 @@ public class JFXApp extends javafx.application.Application {
                 float yConversion = yConversion();
                 float xConversion = xConversion();
 
-                group.setTranslateY(-sim.height * yConversion);
                 background.setY(sim.height * yConversion);
 
                 ballUi.setCenterX(sim.ball.getPosition().x * xConversion);

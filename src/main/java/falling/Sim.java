@@ -43,6 +43,14 @@ public class Sim {
     }
 
 
+    public void reset() {
+        ball.setTransform(new Vec2(1, 0), 0);
+        box1.setTransform(new Vec2(15, boxSize/2), 0);
+        box2.setTransform(new Vec2(15, 3 * boxSize/2), 0);
+        box3.setTransform(new Vec2(15, 5 * boxSize/2), 0);
+    }
+
+
     /**
      * Set up the simulation
      */
@@ -64,7 +72,6 @@ public class Sim {
 
         this.ball = world.createBody(ballDef);
         ball.createFixture(ballFixDef);
-        ball.setTransform(new Vec2(1, 0), 0);
 
         ball.setLinearDamping(0.3f);
 
@@ -93,15 +100,14 @@ public class Sim {
 
         this.box1 = world.createBody(boxDef);
         box1.createFixture(boxFixDef);
-        box1.setTransform(new Vec2(15, boxSize/2), 0);
 
         this.box2 = world.createBody(boxDef);
         box2.createFixture(boxFixDef);
-        box2.setTransform(new Vec2(15, 3 * boxSize/2), 0);
 
         this.box3 = world.createBody(boxDef);
         box3.createFixture(boxFixDef);
-        box3.setTransform(new Vec2(15, 5 * boxSize/2), 0);
+
+        reset();
 
     }
 
